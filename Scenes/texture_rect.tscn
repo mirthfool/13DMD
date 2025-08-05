@@ -10,6 +10,7 @@ expand_mode = 1
 script = ExtResource("1_3ir5p")
 
 [node name="Panel" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0)
 show_behind_parent = true
 custom_minimum_size = Vector2(75, 75)
 layout_mode = 0
