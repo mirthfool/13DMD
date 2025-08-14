@@ -1,30 +1,77 @@
-[gd_scene load_steps=5 format=3 uid="uid://cook1stjw8ddt"]
+[gd_scene load_steps=10 format=3 uid="uid://cook1stjw8ddt"]
 
+[ext_resource type="Texture2D" uid="uid://bgjt06mx6uld5" path="res://Assets/BG1.png" id="1_1l0tm"]
 [ext_resource type="Texture2D" uid="uid://cj6l2n0fwc5in" path="res://Assets/gameBoard.png" id="1_wrm1d"]
 [ext_resource type="Script" uid="uid://wm8w7k57p6pa" path="res://src/instance_dragables.gd" id="2_qxrlw"]
+[ext_resource type="Script" uid="uid://5fnwjsugrm3y" path="res://src/background.gd" id="2_v158k"]
 [ext_resource type="PackedScene" uid="uid://dhfeij17b67ig" path="res://Scenes/texture_rect.tscn" id="3_3dryh"]
+[ext_resource type="Script" uid="uid://bmg3myaiqoked" path="res://src/processor_resource.gd" id="4_i6g32"]
 [ext_resource type="Texture2D" uid="uid://clgnwxtbeyxeh" path="res://Assets/icon.svg" id="4_wowpa"]
+[ext_resource type="Script" uid="uid://uw2bwnd1whl1" path="res://src/scoredisplay.gd" id="5_wowpa"]
+
+[sub_resource type="Resource" id="Resource_1l0tm"]
+script = ExtResource("4_i6g32")
+income_per_day = 6
+heat_per_day = 6
+name = ""
+sprite = ExtResource("4_wowpa")
+power_per_day = 6
+metadata/_custom_type_script = "uid://bmg3myaiqoked"
 
 [node name="Node2D" type="Node2D"]
 
-[node name="GameBoard" type="Sprite2D" parent="."]
-position = Vector2(579.824, 324.75)
-scale = Vector2(0.596836, 0.596836)
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_1l0tm")
+expand_mode = 1
+script = ExtResource("2_v158k")
+pollution_states = Array[Texture2D]([ExtResource("1_1l0tm")])
+metadata/_edit_use_anchors_ = true
+
+[node name="GameBoardSprite" type="Sprite2D" parent="."]
+position = Vector2(620, 360)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("1_wrm1d")
 
-[node name="GridContainer" type="GridContainer" parent="."]
-offset_left = 297.0
-offset_top = 14.0
-offset_right = 864.0
-offset_bottom = 542.0
+[node name="GameGrid" type="GridContainer" parent="."]
+offset_left = 339.0
+offset_top = 51.0
+offset_right = 339.0
+offset_bottom = 51.0
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 0
 columns = 7
 script = ExtResource("2_qxrlw")
 
 [node name="TextureRect" parent="." instance=ExtResource("3_3dryh")]
-offset_left = 161.0
-offset_top = 217.0
-offset_right = 236.0
-offset_bottom = 292.0
-texture = ExtResource("4_wowpa")
+offset_left = 199.0
+offset_top = 398.0
+offset_right = 274.0
+offset_bottom = 473.0
+tile = SubResource("Resource_1l0tm")
+
+[node name="ScoreSystem" type="Control" parent="." node_paths=PackedStringArray("game_board", "profit_display", "heat_display")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("5_wowpa")
+game_board = NodePath("../GameGrid")
+profit_display = NodePath("Profit")
+heat_display = NodePath("Heat")
+
+[node name="Profit" type="Label" parent="ScoreSystem"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 140.0
+offset_right = 240.0
+offset_bottom = 180.0
+
+[node name="Heat" type="Label" parent="ScoreSystem"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 200.0
+offset_right = 240.0
+offset_bottom = 240.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
