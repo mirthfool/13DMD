@@ -1,6 +1,8 @@
-extends Node
+class_name ScoreDisplay extends Control
 
 @export var game_board: GameBoard
+
+var upgrades: Array[Upgrade];
 
 var profit: int = 0;
 @export var profit_display: Label;
@@ -25,6 +27,12 @@ func update_scores() -> void:
 			tile = tile as Processor;
 			profit += tile.income_per_day;
 			heat_produced += tile.heat_per_day;
-		elif tile is Processor:
+		elif tile is Cooler:
 			tile = tile as Cooler;
 			heat_produced += tile.heat_per_day;
+
+	for upgrade:Upgrade in game_board.upgrades:
+		upgrade.apply_upgrade(self);
+
+	for	upgrade:Upgrade in Upgrades.upgrades.values():
+		upgrade.apply_upgrade(self);

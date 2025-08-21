@@ -5,6 +5,8 @@ class_name GameBoard extends GridContainer
 @onready var max_col: int = 7
 @onready var max_row: int = 7
 
+var upgrades: Array[Upgrade];
+
 func _ready() -> void:
 	for i: int in range(max_col * max_row):
 		add_child(dragable.instantiate())
