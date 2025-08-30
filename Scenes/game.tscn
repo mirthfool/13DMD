@@ -1,22 +1,34 @@
-[gd_scene load_steps=10 format=3 uid="uid://cook1stjw8ddt"]
+[gd_scene load_steps=18 format=3 uid="uid://cook1stjw8ddt"]
 
 [ext_resource type="Texture2D" uid="uid://bgjt06mx6uld5" path="res://Assets/BG1.png" id="1_1l0tm"]
 [ext_resource type="Texture2D" uid="uid://cj6l2n0fwc5in" path="res://Assets/gameBoard.png" id="1_wrm1d"]
 [ext_resource type="Script" uid="uid://wm8w7k57p6pa" path="res://src/instance_dragables.gd" id="2_qxrlw"]
 [ext_resource type="Script" uid="uid://5fnwjsugrm3y" path="res://src/background.gd" id="2_v158k"]
 [ext_resource type="PackedScene" uid="uid://dhfeij17b67ig" path="res://Scenes/texture_rect.tscn" id="3_3dryh"]
-[ext_resource type="Script" uid="uid://bmg3myaiqoked" path="res://src/processor_resource.gd" id="4_i6g32"]
 [ext_resource type="Texture2D" uid="uid://clgnwxtbeyxeh" path="res://Assets/icon.svg" id="4_wowpa"]
 [ext_resource type="Script" uid="uid://uw2bwnd1whl1" path="res://src/scoredisplay.gd" id="5_wowpa"]
+[ext_resource type="LabelSettings" uid="uid://d1d5is280lkno" path="res://Resources/Labels.tres" id="6_o5yvi"]
+[ext_resource type="StyleBox" uid="uid://c2uh7ecvx3xwf" path="res://Resources/StyleBox.tres" id="6_rfjv2"]
+[ext_resource type="Script" uid="uid://dkw7ysy2s726k" path="res://src/tilebar.gd" id="7_ldgsr"]
+[ext_resource type="Script" uid="uid://ceqvq2v6kq53e" path="res://src/tile_resource.gd" id="8_h4fw4"]
+[ext_resource type="Script" uid="uid://4w4ha4ciyiye" path="res://src/DayControl.gd" id="10_ldgsr"]
+[ext_resource type="Script" uid="uid://bndpxjdtms5jt" path="res://src/event.gd" id="12_rku1e"]
 
-[sub_resource type="Resource" id="Resource_1l0tm"]
-script = ExtResource("4_i6g32")
-income_per_day = 6
-heat_per_day = 6
+[sub_resource type="Resource" id="Resource_ldgsr"]
+script = ExtResource("8_h4fw4")
 name = ""
 sprite = ExtResource("4_wowpa")
-power_per_day = 6
-metadata/_custom_type_script = "uid://bmg3myaiqoked"
+power_per_day = 0
+metadata/_custom_type_script = "uid://ceqvq2v6kq53e"
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_rku1e"]
+size = Vector2(20, 20)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rku1e"]
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_rfjv2"]
+font_size = 24
 
 [node name="Node2D" type="Node2D"]
 
@@ -44,34 +56,156 @@ theme_override_constants/v_separation = 0
 columns = 7
 script = ExtResource("2_qxrlw")
 
-[node name="TextureRect" parent="." instance=ExtResource("3_3dryh")]
-offset_left = 199.0
-offset_top = 398.0
-offset_right = 274.0
-offset_bottom = 473.0
-tile = SubResource("Resource_1l0tm")
-
-[node name="ScoreSystem" type="Control" parent="." node_paths=PackedStringArray("game_board", "profit_display", "heat_display")]
+[node name="ScoreSystem" type="Control" parent="." node_paths=PackedStringArray("game_board", "day_counter", "profit_display", "heat_display")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("5_wowpa")
 game_board = NodePath("../GameGrid")
-profit_display = NodePath("Profit")
-heat_display = NodePath("Heat")
+day_counter = NodePath("VBoxContainer/Day")
+profit_display = NodePath("VBoxContainer/Profit")
+heat_display = NodePath("VBoxContainer/Heat")
 
-[node name="Profit" type="Label" parent="ScoreSystem"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScoreSystem"]
 layout_mode = 0
-offset_left = 100.0
-offset_top = 140.0
-offset_right = 240.0
-offset_bottom = 180.0
+offset_left = 162.0
+offset_top = 153.0
+offset_right = 314.0
+offset_bottom = 363.0
 
-[node name="Heat" type="Label" parent="ScoreSystem"]
-layout_mode = 0
-offset_left = 100.0
-offset_top = 200.0
-offset_right = 240.0
-offset_bottom = 240.0
+[node name="Day" type="Label" parent="ScoreSystem/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("6_rfjv2")
+label_settings = ExtResource("6_o5yvi")
+horizontal_alignment = 3
+
+[node name="Profit" type="Label" parent="ScoreSystem/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("6_rfjv2")
+label_settings = ExtResource("6_o5yvi")
+horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="ScoreSystem/VBoxContainer/Profit"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+texture = ExtResource("4_wowpa")
+expand_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Heat" type="Label" parent="ScoreSystem/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("6_rfjv2")
+label_settings = ExtResource("6_o5yvi")
+horizontal_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="ScoreSystem/VBoxContainer/Heat"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+texture = ExtResource("4_wowpa")
+expand_mode = 3
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="."]
+offset_left = 337.0
+offset_top = 589.0
+offset_right = 829.0
+offset_bottom = 667.0
+columns = 6
+script = ExtResource("7_ldgsr")
+
+[node name="TextureRect" parent="GridContainer" instance=ExtResource("3_3dryh")]
+layout_mode = 2
+tile = SubResource("Resource_ldgsr")
+
+[node name="Next Day" type="TextureButton" parent="." node_paths=PackedStringArray("scores", "event_handler")]
+offset_left = 830.0
+offset_top = 592.0
+offset_right = 901.0
+offset_bottom = 663.0
+texture_normal = ExtResource("4_wowpa")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("10_ldgsr")
+scores = NodePath("../ScoreSystem")
+event_handler = NodePath("../CanvasLayer/Control")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Control" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("gameboard", "blocker", "name_label", "description_label", "accept", "reject")]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -370.0
+offset_top = -230.0
+offset_right = -370.0
+offset_bottom = -230.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("12_rku1e")
+gameboard = NodePath("../../GameGrid")
+blocker = NodePath("../ColorRect")
+name_label = NodePath("VBoxContainer/Title")
+description_label = NodePath("VBoxContainer/Description")
+accept = NodePath("VBoxContainer/HBoxContainer/Accept")
+reject = NodePath("VBoxContainer/HBoxContainer/Reject")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+layout_mode = 1
+offset_right = 700.0
+offset_bottom = 400.0
+texture = SubResource("PlaceholderTexture2D_rku1e")
+stretch_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 700.0
+offset_bottom = 400.0
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Title" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "Title"
+label_settings = SubResource("LabelSettings_rku1e")
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "Description"
+label_settings = SubResource("LabelSettings_rfjv2")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Reject" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Decline"
+
+[node name="Accept" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Accept"
