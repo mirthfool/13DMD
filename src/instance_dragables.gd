@@ -21,3 +21,6 @@ func get_active_tiles() -> Array[Tile]:
 		if child.texture != null:
 			active_textures.append(child.tile)
 	return active_textures
+
+func add_upgrade(upgrade: Upgrade):
+	upgrades.append(upgrade);

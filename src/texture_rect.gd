@@ -10,6 +10,8 @@ func _ready() -> void:
 		texture = tile.sprite
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
+	if tile == null:
+		return null;
 	previous_texture = texture
 	previous_tile = tile
 	texture = tile.sprite
@@ -29,6 +31,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	return preview_tile
 
+# TODO: Make so can't drop on existing tiles.
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	return data is Tile
 
